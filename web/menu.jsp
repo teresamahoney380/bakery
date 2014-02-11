@@ -18,13 +18,15 @@
     <body>
         <h1 id='logo'>Teppy's Cupcake Cupboard</h1>
     <center>
+        <form id='form1' name='form1' method='POST' action='bakery'>
         
         <br/>
-         <table border="1" width="50" cellspacing="5">
+         <table border="1" width="150" cellspacing="5">
             <thead>
                 <tr>
                     <th>Check</th>
                     <th>Item</th>
+                    <th></th>
                     <th>Price</th>
                     <th>Image</th>
                 </tr>
@@ -40,7 +42,8 @@
                     <td></td>
                     <td>
                         <%= item %></td>
-                    <td> <%= itemPrice %></td>
+                    <td></td>
+                    <td> <%= nf.format(itemPrice) %></td>
                     <td></td>
                             </tr>
             
@@ -49,8 +52,9 @@
             %>
              </tbody>
         </table>
-            
-                       
+             <br/>
+       <input id='order' name='order' type='submit' value='Place Order'>     
+        </form>                   
     </center>
 
     </body>
