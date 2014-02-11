@@ -1,10 +1,13 @@
-<%-- 
-    Document   : menu
-    Created on : Feb 10, 2014, 8:09:27 PM
-    Author     : Owner
---%>
 
+
+<%@page import="java.text.NumberFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="Model.MenuItem"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+	List<MenuItem> menuList = (List<MenuItem>) request.getAttribute("menulist");
+	
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,54 +17,41 @@
     </head>
     <body>
         <h1 id='logo'>Teppy's Cupcake Cupboard</h1>
-        <table border="1">
+    <center>
+        
+        <br/>
+         <table border="1" width="50" cellspacing="5">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Check</th>
                     <th>Item</th>
                     <th>Price</th>
-                    <th></th>
+                    <th>Image</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+        <%
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+            for(MenuItem menuItem : menuList) {
+                            String item = menuItem.getItemName();
+                            double itemPrice = menuItem.getItemPrice();
+                            %>
+                            <tr>
                     <td></td>
+                    <td>
+                        <%= item %></td>
+                    <td> <%= itemPrice %></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
+                            </tr>
+            
+            <%
+            }
+            %>
+             </tbody>
         </table>
+            
+                       
+    </center>
 
     </body>
 </html>
