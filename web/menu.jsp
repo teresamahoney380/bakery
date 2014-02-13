@@ -16,9 +16,9 @@
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <center>
+    <center>
         <a href="http://cooltext.com"><img src="http://images.cooltext.com/3600402.png" width="713" height="93" alt="Teppy's Cupcake Cupboard" /></a>
-    
+
         <form id='form1' name='form1' method='POST' action='bakery'>
 
             <br/>
@@ -27,7 +27,7 @@
                     <tr>
                         <th>Check</th>
                         <th>Item</th>
-                        <th></th>
+
                         <th>Price</th>
                         <th>Image</th>
                     </tr>
@@ -41,10 +41,12 @@
 
                     %>
                     <tr>
-                        <td></td>
+                        <td align="center">
+                            <input name = "select" type="checkbox" >
+                        </td>
                         <td>
                             <%= item%></td>
-                        <td></td>
+
                         <td> <%= nf.format(itemPrice)%></td>
                         <td>
                             <img src =" <%= itemUrl%> "> 
