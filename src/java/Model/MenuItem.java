@@ -10,16 +10,18 @@ public class MenuItem {
     private int id;
     private String itemName;
     private double itemPrice;
+    private String itemUrl;
 
     public MenuItem() {
     }
     
     
 
-    public MenuItem(int id, String itemName, double itemPrice) {
+    public MenuItem(int id, String itemName, double itemPrice, String itemUrl) {
         this.id = id;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
+        this.itemUrl = itemUrl;
     }
 
     public int getId() {
@@ -45,6 +47,15 @@ public class MenuItem {
     public void setItemPrice(double itemPrice) {
         this.itemPrice = itemPrice;
     }
+
+    public String getItemUrl() {
+        return itemUrl;
+    }
+
+    public void setItemUrl(String itemUrl) {
+        this.itemUrl = itemUrl;
+    }
+    
 
     @Override
     public int hashCode() {

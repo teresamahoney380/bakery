@@ -15,14 +15,15 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Owner
+ * @author Teresa Mahoney
  */
-public class MenuItemDAO {
+public class MenuItemDAO implements IMenuItemDAO  {
     private DBAccessor db;
 
     public MenuItemDAO() {
     }
     
+    @Override
     public List<MenuItem> getAllMenuItems() throws Exception{
     db= new DB_MySql();
         try {
@@ -37,7 +38,7 @@ public class MenuItemDAO {
             Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         List<Map> rawData=new ArrayList();
-        rawData = db.retrieveRecords("select menu_id, menu_item, item_price from menu", true);
+        rawData = db.retrieveRecords("select menu_id, menu_item, item_price, item_img_url from menu", true);
         List<MenuItem> records = new ArrayList();
         
          MenuItem mi = null;
@@ -52,6 +53,8 @@ public class MenuItemDAO {
             mi.setItemName(itemName);
             String itemPrice = m.get("item_price").toString();
             mi.setItemPrice(new Double(itemPrice));
+            String itemUrl = m.get("item_img_url").toString();
+            mi.setItemUrl(itemUrl);
             
             records.add(mi);
         }
