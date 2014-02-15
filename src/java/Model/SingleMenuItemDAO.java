@@ -17,15 +17,19 @@ import java.util.logging.Logger;
  *
  * @author Teresa Mahoney
  */
-public class MenuItemDAO implements IMenuItemDAO  {
-    private DBAccessor db;
+public class SingleMenuItemDAO implements IMenuItemDAO  {
+ private DBAccessor db;
 
-    public MenuItemDAO() {
+    public SingleMenuItemDAO() {
     }
-    
     @Override
-    public List<MenuItem> getAllMenuItems() throws Exception{
-    db= new DB_MySql();
+    public List<MenuItem> getAllMenuItems() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<MenuItem> getSingleMenuItems(int i) throws Exception {
+        db= new DB_MySql();
         try {
             db.openConnection("com.mysql.jdbc.Driver", 
                     "jdbc:mysql://localhost:3306/menu_project",
@@ -38,7 +42,13 @@ public class MenuItemDAO implements IMenuItemDAO  {
             Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         List<Map> rawData=new ArrayList();
-        rawData = db.retrieveRecords("select menu_id, menu_item, item_price, item_img_url from menu", true);
+        //
+        // build menu_id parm into sql statement
+        String sqlStmnt = null;
+        sqlStmnt = "select menu_id, menu_item, item_price, item_img_url from menu where";
+        sqlStmnt +=" menu_id = "+i;
+       
+        rawData = db.retrieveRecords(sqlStmnt, true);
         List<MenuItem> records = new ArrayList();
         
          MenuItem mi = null;
@@ -61,16 +71,13 @@ public class MenuItemDAO implements IMenuItemDAO  {
     return records;
 }
 //    public static void main(String[] args) throws Exception {
-//        MenuItemDAO m=new MenuItemDAO();
-//        List<MenuItem> recs = m.getAllMenuItems();
+//        SingleMenuItemDAO m=new SingleMenuItemDAO();
+//        List<MenuItem> recs = m.getSingleMenuItems(2);
 //        for(MenuItem rec:recs){
 //            System.out.println(rec);
 //            
 //        }
-//   }
-
-    @Override
-    public List<MenuItem> getSingleMenuItems(int i) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+ //  }
     }
-}
+   
+

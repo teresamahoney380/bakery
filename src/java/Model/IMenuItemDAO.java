@@ -24,4 +24,6 @@ public interface IMenuItemDAO {
     //        }
     //   }
     
+    List<MenuItem> getSingleMenuItems(int i) throws Exception;
+    
 }

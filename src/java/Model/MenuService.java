@@ -26,4 +26,13 @@ public class MenuService {
         return recs;
     }
 
+    public List<MenuItem> getSingleMenuItem(int i)throws Exception{
+    SingleMenuItemDAO m = new SingleMenuItemDAO();
+        List<MenuItem> recs = m.getSingleMenuItems(i);
+    return recs ;
+}
+//    public static void main(String[] args) throws Exception {
+//        MenuService ms = new MenuService();
+//        System.out.println(ms.getSingleMenuItem(1));
+//    }
 }

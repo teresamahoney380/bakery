@@ -19,7 +19,7 @@
     <center>
         <a href="http://cooltext.com"><img src="http://images.cooltext.com/3600402.png" width="713" height="93" alt="Teppy's Cupcake Cupboard" /></a>
 
-        <form id='form1' name='form1' method='POST' action='bakery'>
+        <form id='form1' name='form1' method='POST' action='bakery?action=order'>
 
             <br/>
             <table border="1" width="150" cellspacing="5">
@@ -35,6 +35,7 @@
                 <tbody>
                     <%            NumberFormat nf = NumberFormat.getCurrencyInstance();
                         for (MenuItem menuItem : menuList) {
+                            int id = menuItem.getId();
                             String item = menuItem.getItemName();
                             double itemPrice = menuItem.getItemPrice();
                             String itemUrl = menuItem.getItemUrl();
@@ -42,7 +43,7 @@
                     %>
                     <tr>
                         <td align="center">
-                            <input name = "select" type="checkbox" >
+                            <input name = "itemId" type="checkbox" value="<%= id%>" >
                         </td>
                         <td>
                             <%= item%></td>
