@@ -51,14 +51,23 @@ public class BakeryController extends HttpServlet {
            // processOrder(itemsOrdered);
              List<Map> orderSummary = new ArrayList();
        List<MenuItem> oi = new ArrayList();
+       List<MenuItem> totalOrder = new ArrayList();
+       double totalItems = 0;
         for (int x = 0; x < (itemsOrdered.length); x++) {
             int itemId = Integer.valueOf(itemsOrdered[x]);
 
             oi = ms.getSingleMenuItem(itemId);
+            MenuItem mi=oi.get(0);
+            
+            totalItems += mi.getItemPrice();
+            
+            totalOrder.add(oi.get(0));
         }
+        String strTotalItems = String.valueOf(totalItems);
             RequestDispatcher view
                     = request.getRequestDispatcher(ORDER_PAGE);
-            request.setAttribute("orderlist", oi);
+            request.setAttribute("orderlist", totalOrder);
+            request.setAttribute("itemtotals", strTotalItems);
             view.forward(request, response);
         } else {
 

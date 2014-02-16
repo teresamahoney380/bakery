@@ -14,5 +14,6 @@
     <body>
         <h1>Hello World!</h1>
         <p> ${errormsg}</p>
+        <a href="index.html"> Home</a>
     </body>
 </html>
