@@ -60,6 +60,19 @@ public class MenuItemDAO implements IMenuItemDAO  {
         }
     return records;
 }
+    // Delete records
+    public int deleteRecs(int recId) throws IllegalArgumentException, ClassNotFoundException, SQLException, Exception{
+        int deleted = 0;
+        DB_MySql db = new DB_MySql();
+            db.openConnection("com.mysql.jdbc.Driver", 
+                    "jdbc:mysql://localhost:3306/menu_project", 
+                    "root", "admin");
+            String sql = "DELETE FROM menu WHERE"
+                               + " menu_id = " + recId;
+            deleted = db.deleteRecords(sql, true);
+            return deleted;
+            
+    }
 //    public static void main(String[] args) throws Exception {
 //        MenuItemDAO m=new MenuItemDAO();
 //        List<MenuItem> recs = m.getAllMenuItems();
@@ -68,6 +81,10 @@ public class MenuItemDAO implements IMenuItemDAO  {
 //            
 //        }
 //   }
+//    public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
+//        MenuItemDAO m=new MenuItemDAO();
+//        System.out.println(m.deleteRecs(10));
+//    }
 
     @Override
     public List<MenuItem> getSingleMenuItems(int i) throws Exception {
