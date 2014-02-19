@@ -61,14 +61,14 @@ public class MenuItemDAO implements IMenuItemDAO  {
     return records;
 }
     // Delete records
-    public int deleteRecs(int recId) throws IllegalArgumentException, ClassNotFoundException, SQLException, Exception{
+    public int deleteRecs(String Ids) throws IllegalArgumentException, ClassNotFoundException, SQLException, Exception{
         int deleted = 0;
         DB_MySql db = new DB_MySql();
             db.openConnection("com.mysql.jdbc.Driver", 
                     "jdbc:mysql://localhost:3306/menu_project", 
                     "root", "admin");
             String sql = "DELETE FROM menu WHERE"
-                               + " menu_id = " + recId;
+                               + " menu_id IN (" + Ids +")";
             deleted = db.deleteRecords(sql, true);
             return deleted;
             
