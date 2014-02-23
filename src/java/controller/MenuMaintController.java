@@ -4,6 +4,7 @@ import Model.MenuItem;
 import Model.MenuService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,45 +41,111 @@ public class MenuMaintController extends HttpServlet {
         String select = (String) request.getParameter("action");
         String addEdit = (String) request.getParameter("addEdit");
         String delete = (String) request.getParameter("delete");
+        String addUpdate = (String) request.getParameter("add");
+        String menuId = (String)request.getParameter("menuId");
         MenuService ms = new MenuService();
-
-        if (addEdit == null && delete == null) {
-            //get database records
-            List<MenuItem> mi = ms.getAllMenuItems();
-            request.setAttribute("menulist", mi);
-
-            RequestDispatcher view
-                    = request.getRequestDispatcher(MAINT_PAGE);
-            view.forward(request, response);
-
-        } else if (addEdit != null) {
-            // addEdit button is selected
-            request.setAttribute("returnMsg", "AddEdit is selected");
-            RequestDispatcher view
-                    = request.getRequestDispatcher("error.jsp");
-            view.forward(request, response);
-        } else {
-            // delete must be selected
-            String[] itemsSelected = request.getParameterValues("itemId");
-            String paramSql = "";
-            for (int x = 0; x < (itemsSelected.length); x++) {
-                int itemId = Integer.valueOf(itemsSelected[x]);
-                if (x == (itemsSelected.length - 1)) {
-                    paramSql = paramSql + itemId;
-                } else {
-                    paramSql = paramSql + itemId + ", ";
-                }
+        String[] itemsSelected = request.getParameterValues("itemId");
+        // Determine what action
+        if (select.equals("update")) {
+            
+            // process add or insert
+           
+            List<String> colHeadings = new ArrayList();
+            List fieldValues = new ArrayList();
+            Integer menu_id = Integer.valueOf(request.getParameter("menuId"));
+            // if update, include menu_Id
+//            if (addUpdate.equals("edit")){
+//            colHeadings.add("menu_id");
+//            fieldValues.add(Integer.valueOf(request.getParameter("menuId")));
+//            }
+            //col headings list
+            colHeadings.add("menu_item");
+            colHeadings.add("item_price");
+            colHeadings.add("item_img_url");
+            //col values list        
+            fieldValues.add(request.getParameter("txt_menu_item"));
+            fieldValues.add(Double.valueOf(request.getParameter("txt_item_price")));
+            fieldValues.add(request.getParameter("txt_item_img_url"));
+            //
+            if (addUpdate.equals("edit")){
+                boolean success = false;
+            success = ms.updateRec(colHeadings, fieldValues, menu_id);
+            
+                request.setAttribute("returnMsg", "from edit");
+            
+            }else{
+            ms.insertRecs(colHeadings, fieldValues); 
+            request.setAttribute("returnMsg", "from add");
             }
-            int deleted = 0;
-            deleted = ms.deleteRecs(paramSql);
-            String returnMsg = deleted + " Records Deleted.";
-            request.setAttribute("returnMsg", returnMsg);
             List<MenuItem> mi = ms.getAllMenuItems();
             request.setAttribute("menulist", mi);
 
             RequestDispatcher view
                     = request.getRequestDispatcher(MAINT_PAGE);
             view.forward(request, response);
+
+        } else {
+            //all other        }
+
+            if (addEdit == null && delete == null) {
+                //get database records
+                List<MenuItem> mi = ms.getAllMenuItems();
+                request.setAttribute("menulist", mi);
+
+                RequestDispatcher view
+                        = request.getRequestDispatcher(MAINT_PAGE);
+                view.forward(request, response);
+
+            } else if (addEdit != null) {
+                // addEdit button is selected
+                //request.setAttribute("returnMsg", "AddEdit is selected");
+                if (itemsSelected != null) {
+                    request.setAttribute("update", "edit");
+                    // get the item selected for update
+                    List<MenuItem> mi = ms.getSingleMenuItem(Integer.valueOf(itemsSelected[0]));
+                    request.setAttribute("single", mi);
+//                    MenuItem single = mi.get(0);
+//                    String name = single.getItemName();
+//                    request.setAttribute("menu_id", single.getId());
+//                    request.setAttribute("menu_item",name);
+//                    request.setAttribute("item_price",single.getItemPrice());
+//                    request.setAttribute("item_img_url", single.getItemUrl());
+
+                } else {
+
+                    request.setAttribute("update", "add");
+                    request.setAttribute("menu_id", "");
+                    request.setAttribute("menu_item", "");
+                    request.setAttribute("item_price", "");
+                    request.setAttribute("item_img_url", "");
+                }
+                RequestDispatcher view
+                        = request.getRequestDispatcher("update.jsp");
+                view.forward(request, response);
+            } else {
+                // delete must be selected
+
+                String paramSql = "";
+                // This should have validation code here to make sure an item is selected
+                for (int x = 0; x < (itemsSelected.length); x++) {
+                    int itemId = Integer.valueOf(itemsSelected[x]);
+                    if (x == (itemsSelected.length - 1)) {
+                        paramSql = paramSql + itemId;
+                    } else {
+                        paramSql = paramSql + itemId + ", ";
+                    }
+                }
+                int deleted = 0;
+                deleted = ms.deleteRecs(paramSql);
+                String returnMsg = deleted + " Records Deleted.";
+                request.setAttribute("returnMsg", returnMsg);
+                List<MenuItem> mi = ms.getAllMenuItems();
+                request.setAttribute("menulist", mi);
+
+                RequestDispatcher view
+                        = request.getRequestDispatcher(MAINT_PAGE);
+                view.forward(request, response);
+            }
         }
     }
 

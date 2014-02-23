@@ -73,14 +73,65 @@ public class MenuItemDAO implements IMenuItemDAO  {
             return deleted;
             
     }
+    public boolean insertRecs(List colHeadings,List fieldValues) throws IllegalArgumentException, Exception{
+     DB_MySql db = new DB_MySql();
+     boolean success=false;
+        try {
+            db.openConnection("com.mysql.jdbc.Driver", 
+                    "jdbc:mysql://localhost:3306/menu_project",
+                    "root", "admin");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+          success = db.insertRecord("menu", colHeadings, fieldValues, true);
+        } catch (Exception ex) {
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      return success;  
+    }
+    public int updateRecs(List colHeadings,List fieldValues, String whereField, Object whereValue){
+        DB_MySql db = new DB_MySql();
+        int count = 0;
+        try { 
+            db.openConnection("com.mysql.jdbc.Driver",
+                    "jdbc:mysql://localhost:3306/menu_project",
+                    "root", "admin");
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            count = db.updateRecords("menu", colHeadings, fieldValues, whereField, whereValue, true);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            Logger.getLogger(MenuItemDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return count;
+    }
 //    public static void main(String[] args) throws Exception {
 //        MenuItemDAO m=new MenuItemDAO();
-//        List<MenuItem> recs = m.getAllMenuItems();
-//        for(MenuItem rec:recs){
-//            System.out.println(rec);
+//        
+//         List l1 = new ArrayList();            
+//            l1.add("menu_item");
+//            l1.add("item_price");
+//            l1.add("item_img_url");
+//            List l2 = new ArrayList();            
+//            l2.add("new cupcake2");
+//            l2.add(2.95);
+//            l2.add("images/choco.jpg");
+//            
+//            System.out.println(m.updateRecs(l1, l2, "menu_id", 21));
+//        
 //            
 //        }
-//   }
+   
 //    public static void main(String[] args) throws ClassNotFoundException, SQLException, Exception {
 //        MenuItemDAO m=new MenuItemDAO();
 //        System.out.println(m.deleteRecs(10));

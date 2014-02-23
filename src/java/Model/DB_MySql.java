@@ -86,9 +86,19 @@ public class DB_MySql implements DBAccessor {
 //            db.openConnection("com.mysql.jdbc.Driver", 
 //                    "jdbc:mysql://localhost:3306/menu_project", 
 //                    "root", "admin");
+//            List l1 = new ArrayList();
 //            
-//            List records = db.retrieveRecords("select menu_id, menu_item, item_price from menu", true);
-//            System.out.println(records);
+//            l1.add("menu_item");
+//            l1.add("item_price");
+//            l1.add("item_img_url");
+//            List l2 = new ArrayList();
+//            
+//            l2.add("new cupcake");
+//            l2.add(5.95);
+//            l2.add("images/choco.jpg");
+//            db.updateRecords("menu", l1, l2, "menu_id", 21, true);
+//            
+//            //System.out.println(records);
 //        }
 
     @Override
@@ -103,12 +113,77 @@ public class DB_MySql implements DBAccessor {
 
     @Override
     public boolean insertRecord(String tableName, List colDescriptors, List colValues, boolean closeConnection) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Statement stmt = null;
+       int count = 0;
+        stmt = conn.createStatement();
+        // build col strings
+        String colStr = "";
+         for (int x = 0; x < (colDescriptors.size()); x++) {
+                    
+                    if (x == (colDescriptors.size() - 1)) {
+                        colStr = colStr + colDescriptors.get(x);
+                    } else {
+                        colStr = colStr + colDescriptors.get(x) + ", ";
+                    }
+                }
+         // build col values
+         String valStr = "";
+         for (int x = 0; x < (colValues.size()); x++) {
+                    
+                    if (x == (colValues.size() - 1)) {
+                        valStr = valStr + "'"+colValues.get(x)+"'";
+                    } else {
+                        valStr = valStr + "'"+colValues.get(x)+"'" + ", ";
+                    }
+                }
+         // build sql
+         StringBuffer sql = new StringBuffer("INSERT INTO ");
+         (sql.append(tableName)).append(" (");
+         (sql.append(colStr)).append(") VALUES(");
+         (sql.append(valStr)).append(")");
+         //
+         System.out.println(sql);
+         count = stmt.executeUpdate(sql.toString());
+         System.out.println(count);
+        if (count ==1){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
     @Override
     public int updateRecords(String tableName, List colDescriptors, List colValues, String whereField, Object whereValue, boolean closeConnection) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Statement stmt = null;
+       int count = 0;
+       Integer id = Integer.valueOf((int) whereValue);
+        stmt = conn.createStatement();
+        // build col string with values
+        String colStr = "";
+         for (int x = 0; x < (colDescriptors.size()); x++) {
+                    
+                    if (x == (colDescriptors.size() - 1)) {
+                        colStr = colStr + colDescriptors.get(x) + " = '"+
+                                colValues.get(x)+"'";
+                    } else {
+                        colStr = colStr + colDescriptors.get(x) + " = '"+
+                                colValues.get(x)+"'" + ", ";
+                    }
+                }
+        
+         
+         // build sql
+         StringBuffer sql = new StringBuffer("UPDATE ");
+         (sql.append(tableName)).append(" SET ");
+         (sql.append(colStr)).append(" WHERE ");
+         (sql.append(whereField)).append(" = ");
+         sql.append(id);
+         //
+         System.out.println(sql);
+         count = stmt.executeUpdate(sql.toString());
+         System.out.println(count);
+         return count;
+    }// end method
 
 }// end class
